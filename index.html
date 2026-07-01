@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, initial-scale=1">
+<title>Agile Lens — A Decade Through the Lens (2016–2026)</title>
+<!--
+  decade-lens — 50s cinematic composition, 1920x1080 @ 30fps.
+  Built from the Agile Lens knowledge base (see README.md for sources).
+  HyperFrames-compliant per ~/knowledge/intelligence/techniques/hyperframes-from-website.md:
+  single file, single paused timeline registered at window.__timelines['decade-lens'],
+  fromTo-only entrances, finite repeats, no iframes, no stacked transform tweens,
+  hard-kills on children of .clip scenes only.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101011; --card:#1F1F1F; --ink:#FBFBFB; --ink2:#C5C5C5; --ink3:#797979;
+    --magenta:#FE00B5; --purple:#3500A7; --teal:#00C98D; --line:#333333;
+    --amber:#FFB84D; --rose:#FF5C8A; --violet:#7C4DFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:var(--bg);height:100%;overflow:hidden}
+  body{font-family:'Manrope',Arial,sans-serif;color:var(--ink)}
+
+  /* the composition root doubles as the live fit-to-window stage (scaled in live mode only) */
+  .composition{position:absolute;top:0;left:0;width:1920px;height:1080px;overflow:hidden;
+    background:var(--bg);transform-origin:top left}
+
+  /* persistent backdrop — static, outside all .clip scenes */
+  .bg{position:absolute;inset:0;
+    background:
+      radial-gradient(1100px 700px at 82% -12%, rgba(53,0,167,.32), transparent 62%),
+      radial-gradient(900px 640px at 8% 112%, rgba(254,0,181,.14), transparent 60%),
+      radial-gradient(1400px 1000px at 50% 50%, rgba(21,21,22,.0), rgba(8,8,9,.75) 100%),
+      var(--bg);}
+  .bg::after{content:'';position:absolute;inset:0;
+    background:radial-gradient(1200px 800px at 50% 46%, transparent 55%, rgba(0,0,0,.45));}
+
+  .scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;visibility:hidden}
+  .scene.on{visibility:visible}
+  .content{max-width:1560px;text-align:center;padding:0 80px}
+
+  .tag{display:inline-block;border:1px solid var(--teal);color:var(--teal);border-radius:800px;
+    padding:10px 26px;font-size:21px;font-weight:500;letter-spacing:.3em;text-transform:uppercase}
+  h1{font-size:76px;font-weight:300;line-height:1.16;letter-spacing:.005em;margin:34px 0 0}
+  .sub{font-size:30px;font-weight:300;color:var(--ink2);line-height:1.5;margin-top:26px}
+  .grad{background:linear-gradient(90deg,var(--magenta),var(--violet));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* beat 1 — headset */
+  .b1 svg.headset{width:460px;height:auto;display:block;margin:0 auto 8px}
+  .b1 .draw{fill:none;stroke:rgba(197,197,197,.9);stroke-width:2.5;stroke-linecap:round}
+  .b1 .lens{stroke:rgba(121,121,121,.9);stroke-width:2}
+  .b1 .glint{fill:var(--magenta)}
+
+  /* beat 2 — quote */
+  .b2 .quote{font-size:46px;font-weight:300;line-height:1.3;margin-top:38px}
+  .b2 .attr{font-size:22px;color:var(--ink3);letter-spacing:.14em;margin-top:16px;text-transform:uppercase}
+
+  /* beat 3 — craft + chips */
+  .b3 .aura-wrap{position:absolute;left:50%;top:50%;width:1080px;height:620px;
+    transform:translate(-50%,-56%);pointer-events:none}
+  .b3 .aura{width:100%;height:100%;
+    background:radial-gradient(closest-side, rgba(254,0,181,.16), rgba(53,0,167,.10) 55%, transparent 72%)}
+  .b3 .content{position:relative;max-width:1700px}
+  .b3 .chips{display:flex;gap:26px;justify-content:center;margin-top:56px;flex-wrap:wrap}
+  .b3 .chip{border:1px solid var(--teal);color:var(--teal);border-radius:800px;padding:14px 30px;
+    font-size:22px;font-weight:500;letter-spacing:.22em;text-transform:uppercase}
+
+  /* beat 4 — lessons */
+  .b4 .subtag{font-size:21px;color:var(--ink3);letter-spacing:.12em;margin-top:20px}
+  .b4 .rows{margin-top:60px;display:inline-flex;flex-direction:column;gap:38px;align-items:flex-start;text-align:left}
+  .b4 .row{display:flex;align-items:center;gap:34px}
+  .b4 .yr{min-width:118px;text-align:center;border-radius:800px;padding:10px 0;font-size:23px;
+    font-weight:600;letter-spacing:.08em}
+  .b4 .yr.amber{border:1px solid var(--amber);color:var(--amber)}
+  .b4 .yr.violet{border:1px solid var(--violet);color:var(--violet)}
+  .b4 .lt{font-size:44px;font-weight:300;color:var(--ink)}
+
+  /* beat 6 — marquee */
+  .b6 .marquee{margin-top:54px;color:var(--ink3);font-size:24px;font-weight:400;
+    letter-spacing:.24em;line-height:2.1;text-transform:uppercase}
+
+  /* beat 7 — constellation */
+  .b7 svg.mono{width:820px;height:auto;display:block;margin:0 auto}
+  .b7 .ring{fill:none;stroke:rgba(251,251,251,.85);stroke-width:2.5}
+  .b7 .cord{fill:none;stroke:rgba(197,197,197,.7);stroke-width:2;stroke-dasharray:210;stroke-dashoffset:210}
+  .b7 text{font-family:'Manrope',Arial,sans-serif;font-size:21px;font-weight:500;
+    fill:var(--ink3);letter-spacing:.08em}
+  .b7 text.c1{font-size:44px;font-weight:300;fill:var(--ink);letter-spacing:.18em}
+  .b7 text.c2{font-size:23px;font-weight:400;fill:var(--ink2);letter-spacing:.34em}
+
+  /* beat 8 — close */
+  .b8 .still{font-size:44px;font-weight:300;color:var(--ink2)}
+  .b8 .ship{font-size:58px;font-weight:300;line-height:1.25;margin-top:34px}
+  .b8 .mark{margin-top:74px;display:flex;flex-direction:column;align-items:center;gap:22px}
+  .b8 .wordmark{font-size:62px;font-weight:300;letter-spacing:.42em;text-indent:.42em}
+  .b8 .years{font-size:24px;color:var(--ink3);letter-spacing:.5em;text-indent:.5em}
+
+  /* live-viewing UI harness (hidden in render mode; see README) */
+  #ui{position:fixed;left:0;right:0;bottom:0;z-index:50;opacity:.92}
+  #ui .rail{height:5px;background:rgba(51,51,51,.6);cursor:pointer}
+  #ui .fill{height:100%;width:0%;background:linear-gradient(225deg,var(--purple),#FF00B6)}
+  #ui .hint{position:fixed;right:18px;bottom:16px;font-size:12px;color:var(--ink3);
+    letter-spacing:.12em;text-transform:uppercase}
+  .render #ui{display:none}
+</style>
+</head>
+<body>
+<!-- stage IS the composition root: first body child so the linter resolves it,
+     and the live fit-to-window scale applies to it directly (render mode never scales) -->
+<main id="stage" class="composition" data-composition-id="decade-lens" data-width="1920" data-height="1080"
+      data-start="0" data-duration="50">
+  <div class="bg"></div>
+
+  <!-- BEAT 1 — ORIGIN · 2013 -->
+  <section id="beat-1-origin" class="scene clip b1" data-start="0" data-duration="6">
+    <div class="content">
+      <svg class="headset" viewBox="0 0 440 240" aria-hidden="true">
+        <rect class="draw visor" x="70" y="60" width="300" height="150" rx="42" ry="42"/>
+        <path class="draw strap sL" d="M70,105 C22,105 22,165 70,165"/>
+        <path class="draw strap sR" d="M370,105 C418,105 418,165 370,165"/>
+        <circle class="draw lens lA" cx="155" cy="135" r="46"/>
+        <circle class="draw lens lB" cx="285" cy="135" r="46"/>
+        <circle class="glint" cx="172" cy="116" r="6"/>
+      </svg>
+      <span class="tag">Origin · 2013</span>
+      <h1>It starts with a <span class="grad">$300 dev kit.</span></h1>
+      <p class="sub">An Oculus Rift DK1 lands at Fisher-Dachs Associates.<br>
+        Alex Coulombe teaches himself C# to wire Unity to it.</p>
+    </div>
+  </section>
+
+  <!-- BEAT 2 — FOUNDING · 2016 -->
+  <section id="beat-2-founding" class="scene clip b2" data-start="6" data-duration="6">
+    <div class="content">
+      <span class="tag">Founding · 2016</span>
+      <h1>Josh calls Alex in — before Alex can ask.</h1>
+      <p class="quote"><span class="grad">&ldquo;Let me pay forward what Jules Fisher did for me.&rdquo;</span></p>
+      <p class="attr">Josh Dachs, co-founder</p>
+      <p class="sub">Agile Lens is founded. A mentorship lineage becomes a studio.</p>
+    </div>
+  </section>
+
+  <!-- BEAT 3 — THE CRAFT -->
+  <section id="beat-3-craft" class="scene clip b3" data-start="12" data-duration="6">
+    <div class="aura-wrap"><div class="aura"></div></div>
+    <div class="content">
+      <span class="tag">The craft</span>
+      <h1>We craft real and virtual spaces —<br>and the <span class="grad">spectacles</span> within them.</h1>
+      <div class="chips">
+        <span class="chip">Holodeck Anywhere</span>
+        <span class="chip">Blueprint Immersive</span>
+        <span class="chip">Stage Presence</span>
+        <span class="chip">Floor Tour</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEAT 4 — LESSONS, THE HARD WAY -->
+  <section id="beat-4-lessons" class="scene clip b4" data-start="18" data-duration="7">
+    <div class="content">
+      <span class="tag">Lessons, the hard way</span>
+      <p class="subtag">from &ldquo;10 Lessons from 10 Years&rdquo; — HarvardXR 2026 closing keynote</p>
+      <div class="rows">
+        <div class="row r1"><span class="yr amber">2018</span>
+          <span class="lt">Being sought-after is a blessing and a curse.</span></div>
+        <div class="row r2"><span class="yr violet">2021</span>
+          <span class="lt">Require a deposit. Before you build.</span></div>
+        <div class="row r3"><span class="yr amber">2022</span>
+          <span class="lt">Protect time for &ldquo;we&rsquo;re not sure yet.&rdquo;</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEAT 5 — THE TURN · NOV 2022 -->
+  <section id="beat-5-turn" class="scene clip b5" data-start="25" data-duration="6">
+    <div class="content">
+      <span class="tag">The turn · November 2022</span>
+      <h1>One burned-out ask changes everything:<br>
+        <span class="grad">a month of R&amp;D, paid up front.</span></h1>
+      <p class="sub">The client says yes. The retainer funds the first full-time hire —<br>
+        and Alex-plus-contractors becomes a studio.</p>
+    </div>
+  </section>
+
+  <!-- BEAT 6 — THE FLYWHEEL -->
+  <section id="beat-6-flywheel" class="scene clip b6" data-start="31" data-duration="6">
+    <div class="content">
+      <span class="tag">The flywheel</span>
+      <h1>Client work funds R&amp;D.<br>R&amp;D becomes IP. <span class="grad">IP wins the next client.</span></h1>
+      <div class="marquee">
+        <div class="mline m1">Disney &middot; CBS &middot; Kennedy Center &middot; Four Seasons</div>
+        <div class="mline m2">Royal Shakespeare Company &middot; Waldorf Astoria &middot; Dell</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEAT 7 — TEN YEARS · TEN LESSONS (monocle constellation) -->
+  <section id="beat-7-constellation" class="scene clip b7" data-start="37" data-duration="6.5">
+    <div class="content">
+      <svg class="mono" viewBox="0 0 640 560" aria-hidden="true">
+        <circle class="ring" cx="320" cy="280" r="200"/>
+        <path class="cord" d="M520,280 Q564,344 562,462"/>
+        <circle class="dot d0" cx="320" cy="80" r="7" fill="#00C98D"/>
+        <circle class="dot d1" cx="437.6" cy="118.2" r="7" fill="#7C4DFF"/>
+        <circle class="dot d2" cx="510.2" cy="218.2" r="7" fill="#FFB84D"/>
+        <circle class="dot d3" cx="510.2" cy="341.8" r="7" fill="#00C98D"/>
+        <circle class="dot d4" cx="437.6" cy="441.8" r="7" fill="#FF5C8A"/>
+        <circle class="dot d5" cx="320" cy="480" r="7" fill="#7C4DFF"/>
+        <circle class="dot d6" cx="202.4" cy="441.8" r="7" fill="#FFB84D"/>
+        <circle class="dot d7" cx="129.8" cy="341.8" r="7" fill="#00C98D"/>
+        <circle class="dot d8" cx="129.8" cy="218.2" r="7" fill="#7C4DFF"/>
+        <circle class="dot d9" cx="202.4" cy="118.2" r="7" fill="#FF5C8A"/>
+        <circle class="dot dB" cx="562" cy="474" r="7" fill="#FFB84D"/>
+        <text class="yl y0" x="320" y="46" text-anchor="middle">2016</text>
+        <text class="yl y1" x="463" y="92" text-anchor="middle">2017</text>
+        <text class="yl y2" x="552" y="212" text-anchor="middle">2018</text>
+        <text class="yl y3" x="552" y="360" text-anchor="middle">2019</text>
+        <text class="yl y4" x="463" y="482" text-anchor="middle">2020</text>
+        <text class="yl y5" x="320" y="528" text-anchor="middle">2021</text>
+        <text class="yl y6" x="177" y="482" text-anchor="middle">2022</text>
+        <text class="yl y7" x="88" y="360" text-anchor="middle">2023</text>
+        <text class="yl y8" x="88" y="212" text-anchor="middle">2024</text>
+        <text class="yl y9" x="177" y="92" text-anchor="middle">2025</text>
+        <text class="yl yB" x="600" y="500" text-anchor="middle">'26</text>
+        <text class="c1" x="320" y="270" text-anchor="middle">TEN YEARS</text>
+        <text class="c2" x="320" y="316" text-anchor="middle">TEN LESSONS</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- BEAT 8 — CLOSE -->
+  <section id="beat-8-close" class="scene clip b8" data-start="43.5" data-duration="6.5">
+    <div class="content">
+      <p class="still">Still bootstrapped. Still specialist. Still inbound-only.</p>
+      <p class="ship">Every three years, everything changes.<br>
+        <span class="grad">Ship anyway.</span></p>
+      <div class="mark">
+        <svg class="lensmark" viewBox="0 0 140 140" width="110" height="110" aria-hidden="true">
+          <circle cx="70" cy="66" r="38" fill="none" stroke="#FBFBFB" stroke-width="2.5"/>
+          <ellipse cx="70" cy="66" rx="60" ry="19" fill="none" stroke="#FE00B5" stroke-width="1.5"
+            transform="rotate(-24 70 66)"/>
+          <line x1="97" y1="93" x2="112" y2="108" stroke="#FBFBFB" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="70" cy="66" r="4.5" fill="#00C98D"/>
+        </svg>
+        <div class="wordmark">AGILE LENS</div>
+        <div class="years">2016 — 2026</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="ui">
+  <div class="hint">space — play/pause &nbsp;·&nbsp; &larr;&rarr; — seek &nbsp;·&nbsp; click bar — jump</div>
+  <div class="rail"><div class="fill"></div></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+/* ============================================================
+   Timeline — single, paused, registered for HyperFrames.
+   Rules honored (KB: hyperframes-from-website.md):
+   #2 one transform tween per element (pulse lives on a dedicated child)
+   #3 fromTo everywhere   #4/#5 finite ambient loops on tl, no repeat:-1
+   #6 one file, one tl    #7 hard-kills on .clip CHILDREN at each window end
+   ============================================================ */
+const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out', overwrite: 'auto' } });
+window.__timelines = window.__timelines || {};
+window.__timelines['decade-lens'] = tl;
+
+const rise = (sel, t, d = 0.7, y = 36) =>
+  tl.fromTo(sel, { autoAlpha: 0, y }, { autoAlpha: 1, y: 0, duration: d }, t);
+const seal = (n, end, fade = true) => {
+  if (fade) tl.to(`.b${n} .content`, { opacity: 0, duration: 0.45, ease: 'power2.in' }, end - 0.5);
+  tl.set(`.b${n} .content`, { opacity: 0, visibility: 'hidden' }, end);
+};
+const draw = (sel, len, t, d) =>
+  tl.fromTo(sel, { strokeDasharray: len, strokeDashoffset: len, autoAlpha: 1 },
+                 { strokeDashoffset: 0, duration: d, ease: 'power2.inOut' }, t);
+
+/* ---- Beat 1 · Origin (0–6) ---- */
+draw('.b1 .visor', 940, 0.35, 1.3);
+draw('.b1 .sL', 160, 1.0, 0.7);
+draw('.b1 .sR', 160, 1.1, 0.7);
+draw('.b1 .lA', 300, 1.3, 0.8);
+draw('.b1 .lB', 300, 1.45, 0.8);
+tl.fromTo('.b1 .glint', { autoAlpha: 0, attr: { r: 0 } },
+  { autoAlpha: 1, attr: { r: 6 }, duration: 0.5, ease: 'back.out(2)' }, 2.0);
+rise('.b1 .tag', 0.5, 0.6);
+rise('.b1 h1', 1.1, 0.8);
+rise('.b1 .sub', 2.1, 0.7);
+seal(1, 6);
+
+/* ---- Beat 2 · Founding (6–12) ---- */
+rise('.b2 .tag', 6.4, 0.6);
+rise('.b2 h1', 6.8, 0.8);
+rise('.b2 .quote', 7.7, 0.9, 28);
+rise('.b2 .attr', 8.5, 0.6, 20);
+rise('.b2 .sub', 9.3, 0.7);
+seal(2, 12);
+
+/* ---- Beat 3 · The craft (12–18) ---- */
+rise('.b3 .aura-wrap', 12.3, 0.8, 0);
+tl.fromTo('.b3 .aura', { scale: 0.97 },
+  { scale: 1.05, duration: 0.45, yoyo: true, repeat: 7, ease: 'sine.inOut' }, 12.5); /* finite pulse */
+rise('.b3 .tag', 12.5, 0.6);
+rise('.b3 h1', 12.8, 0.9);
+['.b3 .chip:nth-child(1)', '.b3 .chip:nth-child(2)', '.b3 .chip:nth-child(3)', '.b3 .chip:nth-child(4)']
+  .forEach((sel, i) => rise(sel, 13.9 + i * 0.28, 0.55, 24));
+seal(3, 18);
+
+/* ---- Beat 4 · Lessons (18–25) ---- */
+rise('.b4 .tag', 18.4, 0.6);
+rise('.b4 .subtag', 18.8, 0.6, 20);
+rise('.b4 .r1', 19.4, 0.75);
+rise('.b4 .r2', 20.5, 0.75);
+rise('.b4 .r3', 21.6, 0.75);
+seal(4, 25);
+
+/* ---- Beat 5 · The turn (25–31) ---- */
+rise('.b5 .tag', 25.4, 0.6);
+rise('.b5 h1', 25.8, 0.9);
+rise('.b5 .sub', 27.2, 0.8);
+seal(5, 31);
+
+/* ---- Beat 6 · The flywheel (31–37) ---- */
+rise('.b6 .tag', 31.4, 0.6);
+rise('.b6 h1', 31.8, 0.9);
+rise('.b6 .m1', 33.2, 0.7, 24);
+rise('.b6 .m2', 33.55, 0.7, 24);
+seal(6, 37);
+
+/* ---- Beat 7 · Constellation (37–43.5) ---- */
+rise('.b7 .mono', 37.2, 0.5, 0);
+draw('.b7 .ring', 1257, 37.4, 1.7);
+for (let i = 0; i < 10; i++) {
+  const t = 38.2 + i * 0.24;
+  tl.fromTo(`.b7 .d${i}`, { autoAlpha: 0, attr: { r: 0 } },
+    { autoAlpha: 1, attr: { r: 7 }, duration: 0.45, ease: 'back.out(2.2)' }, t);
+  tl.fromTo(`.b7 .y${i}`, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, t + 0.08);
+}
+tl.fromTo('.b7 .cord', { strokeDashoffset: 210 },
+  { strokeDashoffset: 0, duration: 0.7, ease: 'power2.inOut' }, 41.0);
+tl.fromTo('.b7 .dB', { autoAlpha: 0, attr: { r: 0 } },
+  { autoAlpha: 1, attr: { r: 7 }, duration: 0.45, ease: 'back.out(2.2)' }, 41.55);
+tl.fromTo('.b7 .yB', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 41.75);
+tl.fromTo('.b7 .c1', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.7 }, 41.6);
+tl.fromTo('.b7 .c2', { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.7 }, 42.0);
+seal(7, 43.5);
+
+/* ---- Beat 8 · Close (43.5–50) — holds to final frame, kill only ---- */
+rise('.b8 .still', 44.0, 0.8);
+rise('.b8 .ship', 45.5, 0.9);
+rise('.b8 .lensmark', 47.1, 0.8, 20);
+rise('.b8 .wordmark', 47.4, 0.8, 20);
+rise('.b8 .years', 47.9, 0.6, 14);
+seal(8, 50, false);
+
+/* ============================================================
+   Live-viewing harness. NOT part of the composition: no GSAP
+   tweens here, only tl.play/pause/seek + direct style writes.
+   Disabled with ?render=1 so the HyperFrames clip system owns
+   scene visibility during capture (see README).
+   ============================================================ */
+(function () {
+  const params = new URLSearchParams(location.search);
+  const renderMode = params.get('render') === '1';
+  if (renderMode) { document.body.classList.add('render'); return; }
+
+  const scrubMode = params.get('paused') === '1'; // deterministic: no transport, drive via tl.seek()
+
+  const scenes = Array.from(document.querySelectorAll('.scene.clip')).map(el => ({
+    el, start: parseFloat(el.dataset.start), dur: parseFloat(el.dataset.duration)
+  }));
+  const END = tl.duration();
+  const fill = document.querySelector('#ui .fill');
+
+  // class-based (never inline) so the HyperFrames clip system always wins at render time.
+  // Driven by gsap.ticker (every frame, no tweens) because tl.seek() suppresses onUpdate —
+  // this catches ALL time changes: play, pause, transport, and external seeks alike.
+  const syncUI = () => {
+    const t = tl.time();
+    scenes.forEach(s => s.el.classList.toggle('on',
+      t >= s.start && (t < s.start + s.dur || (t >= END && s.start + s.dur >= END))));
+    fill.style.width = (tl.progress() * 100) + '%';
+  };
+  gsap.ticker.add(syncUI);        // frame-accurate during playback
+  let lastT = -1;                 // always-alive fallback: gsap's ticker auto-sleeps on a
+  setInterval(() => {             // paused timeline, and rAF stalls in hidden tabs.
+    const t = tl.time();          // no-op unless time moved, so an idle page stays idle
+    if (t !== lastT) { lastT = t; syncUI(); }
+  }, 100);
+  syncUI();
+
+  // fit 1920x1080 stage to window
+  const stage = document.getElementById('stage');
+  const fit = () => {
+    const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+    stage.style.transform =
+      `translate(${(innerWidth - 1920 * s) / 2}px, ${(innerHeight - 1080 * s) / 2}px) scale(${s})`;
+  };
+  addEventListener('resize', fit); fit();
+
+  if (scrubMode) return; // no transport handlers, no autoplay — pure scrub target
+
+  // transport
+  const toggle = () => tl.paused() ? tl.play() : tl.pause();
+  addEventListener('keydown', e => {
+    if (e.code === 'Space') { e.preventDefault(); toggle(); }
+    if (e.code === 'ArrowRight') tl.seek(Math.min(END, tl.time() + 2));
+    if (e.code === 'ArrowLeft') tl.seek(Math.max(0, tl.time() - 2));
+  });
+  document.querySelector('#ui .rail').addEventListener('click', e => {
+    tl.seek((e.clientX / innerWidth) * END);
+  });
+  stage.addEventListener('click', toggle);
+
+  {
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => setTimeout(() => tl.play(), 300));
+    } else { setTimeout(() => tl.play(), 600); }
+  }
+})();
+</script>
+</body>
+</html>
