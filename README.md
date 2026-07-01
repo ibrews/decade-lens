@@ -1,5 +1,7 @@
 # decade-lens — A Decade Through the Lens (2016–2026)
 
+**Watch it live: https://ibrews.github.io/decade-lens/**
+
 A 50-second, 1920×1080 cinematic composition telling the 10-year Agile Lens story —
 sourced entirely from the Agile Lens knowledge base, styled to the brand design system,
 and built HyperFrames-compliant (render-ready GSAP, single file, seekable timeline).
