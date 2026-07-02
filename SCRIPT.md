@@ -3,9 +3,18 @@
 Narration backbone. Durations derive from narration length, per the KB workflow
 (`intelligence/techniques/hyperframes-from-website.md`, step 3).
 
-> **VO/TTS: pending** (skipped in the first lint-clean build per workflow step 5).
+> **VO/TTS: DRAFT SHIPPED (2026-07-02).** F5-TTS clone of Alex's voice, `assets/vo.wav`, muxed
+> onto `decade-lens.mp4`. Clip 8 ("Still bootstrapped. Still specialist. Still inbound-only.")
+> was trimmed to "Still bootstrapped, specialist, inbound-only." to fit its 2.4s ceiling —
+> see the decade-lens-vo trigger Result for the full clip-by-clip timing table. This is a
+> clone-voice draft for A/B; Alex may re-record the same 9 lines/timings himself if the
+> clone doesn't clear the bar for a public anniversary piece. Not wired into `index.html` as
+> a playable `<audio>` element — a HyperFrames render-pipeline bug means any `<audio>` in the
+> composition (even JS-created, even unused) breaks visual rendering past the first beat; see
+> `intelligence/techniques/hyperframes-from-website.md` § 2026-07-02. The audio is muxed onto
+> the rendered video with ffmpeg after `hyperframes render` instead.
 > The draft narration table below preserves the full sourced prose, but it does NOT all fit
-> the beat windows at a real read pace — use the **VO cut** below for recording/TTS instead.
+> the beat windows at a real read pace — the **VO cut** below is what was actually recorded.
 
 Every factual line is sourced from the KB — no invented claims.
 
