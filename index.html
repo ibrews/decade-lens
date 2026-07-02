@@ -379,6 +379,16 @@ seal(8, 50, false);
   const END = tl.duration();
   const fill = document.querySelector('#ui .fill');
 
+  // NOTE: this composition intentionally wires no voiceover playback element at all,
+  // static or script-created. Any such element present anywhere in this file, even
+  // one with zero script control over it, made the render command inject its own
+  // broken internal tracking nodes and the output froze visually after the first
+  // beat (root cause: this file's own renderMode URL-param gate above never actually
+  // triggers during a real render in this tool version, so this whole live-viewing
+  // IIFE always executes during capture too, colliding with the render pipeline's own
+  // handling of that element type). The narration WAV is muxed onto the rendered
+  // video afterward instead — see the decade-lens-vo trigger Result for the command.
+
   // class-based (never inline) so the HyperFrames clip system always wins at render time.
   // Driven by gsap.ticker (every frame, no tweens) because tl.seek() suppresses onUpdate —
   // this catches ALL time changes: play, pause, transport, and external seeks alike.
