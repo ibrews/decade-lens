@@ -65,3 +65,7 @@ doc — no Web Audio synthesis at render time.
 - `projects/harvardxr-keynote/overview.md` — the 10 lessons, accent rotation, monocle map finale
 - `intelligence/techniques/hyperframes-from-website.md` — the 7 load-bearing GSAP rules
 - `departments/engineering/hyperframes-findings.md` — trap catalog + rendering checklist
+
+## Support
+
+If you like seeing this kind of thing get built and shared, [donations are always welcome](https://www.alexcoulombepresents.com/support) — they buy hardware, render time, and the freedom to keep giving most of this away.
