@@ -15,6 +15,14 @@ Open `index.html` in any browser. It autoplays, scales to fit the window, and gi
 - `?paused=1` — start paused (deterministic scrubbing) · `?render=1` — disable the live
   harness entirely (render mode)
 
+## Things to Try
+
+1. **Open `index.html` (or the [live page](https://ibrews.github.io/decade-lens/))** — once the fonts load, the 50-second piece plays on its own; press **space** or click the stage to pause and resume.
+2. **Press → a few times, then click the thin rail along the bottom edge** — each → seeks 2 s forward, a rail click seeks to that fraction of the timeline, and the gradient fill tracks the position.
+3. **Load `index.html?paused=1` and run `window.__timelines['decade-lens'].seek(37)` in the browser console** — nothing autoplays in this mode; the seek lands on beat 7, the monocle constellation (`data-start="37"`).
+4. **Load `index.html?render=1`** — the rail, keys and click-to-pause are gone and `<body>` carries the `render` class; this is the state HyperFrames captures.
+5. **Run `npx hyperframes lint` in the checkout, then play `decade-lens.mp4`** — the lint ends in `0 error(s)` (warnings vary with the CLI version: 9 `nested_structure_needs_subcomposition` on 2026-10-27, which ask to split what this build deliberately keeps in one file); the MP4 carries the draft narration from `assets/vo.wav` as an AAC track.
+
 ## The 8 beats (all facts sourced — see SCRIPT.md for the per-line source map)
 
 1. **Origin · 2013** — the $300 Oculus DK1 at Fisher-Dachs; Alex teaches himself C#
@@ -69,3 +77,7 @@ doc — no Web Audio synthesis at render time.
 ## Support
 
 If you like seeing this kind of thing get built and shared, [donations are always welcome](https://www.alexcoulombepresents.com/support) — they buy hardware, render time, and the freedom to keep giving most of this away.
+
+## Credits
+
+Built by **Alex Coulombe Presents** ([ibrews](https://github.com/ibrews)). House style: [acp-style-guide](https://github.com/ibrews/acp-style-guide).
